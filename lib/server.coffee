@@ -3,18 +3,18 @@
 WebSocketServer = require('ws').Server
 childProces = require 'child_process'
 
-pid = null 
+pid = null
 
 class Server
   constructor: (opts) ->
-    @path = process.cwd()
+    @path = opts?.path || process.cwd()
     @port = 30080
     @spawnOpt = stdio: 'inherit'
 
     @sessions = []
 
-    @storePid = (pid) -> 
-      @electronPid = pid 
+    @storePid = (pid) ->
+      @electronPid = pid
 
     if opts?.useGlobalElectron
       @electron = 'electron'
@@ -36,7 +36,7 @@ class Server
     electronProc.on 'error', (err) =>
       @log 'unable to start electron from ' + @path + '/' + @electron
 
-    @storePid electronProc.pid 
+    @storePid electronProc.pid
 
     return
 
@@ -51,7 +51,7 @@ class Server
         { type, data, id } = JSON.parse message
 
         @log 'receive message from client(window_id: ' + id + ') ' + message
-        
+
         messageHandler type, data, ws
 
       ws.on 'close', =>
@@ -64,7 +64,7 @@ class Server
     return
 
   messageHandler: (type, data, ws) ->
-    switch type 
+    switch type
       when 'changeBounds'
         ws.bounds = data.bounds
       when 'getBounds'
@@ -75,7 +75,7 @@ class Server
   restart: (args, cb) ->
     @stop()
     @wss.close()
-    
+
     process.nextTick =>
       @start()
 
