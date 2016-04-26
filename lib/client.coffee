@@ -14,25 +14,25 @@ class Client
 
     if browserWindow
       @browserWindow = browserWindow
-    else if process.type is 'renderer' 
+    else if process.type is 'renderer'
       @browserWindow =  require('remote').getCurrentWindow()
 
     @id = @browserWindow?.id or Client.getId()
-    
+
     @socket = new WebSocket 'ws://localhost:' + @port + '/'
-    
+
     @socket.on 'open', =>
       @log 'connected server'
-      
+
       @socket.on 'message', (msg) =>
         { type, data } = JSON.parse(msg)
 
-        if type 
+        if type
           @log 'receive message: ' + msg
 
-          @messageHandler type, data 
+          @messageHandler type, data
 
-    return 
+    return
 
   log: (msg) ->
     console.log '[' + (new Date).toISOString() + '] [electron-livereload] [client: ' + @id + '] ' + msg
@@ -43,14 +43,13 @@ class Client
     return
 
   messageHandler: (type, data) ->
-    switch type 
+    switch type
       when 'reload'
         if @browserWindow
-          currentUrl = @browserWindow.webContents.getUrl()
-          @browserWindow.webContents.stop()      
-          @browserWindow.webContents.destroy()
-          @browserWindow.webContents._reloadIgnoringCache()
-          @browserWindow.webContents.loadUrl currentUrl 
+          currentUrl = @browserWindow.webContents.getURL()
+          @browserWindow.webContents.stop()
+          @browserWindow.webContents.reloadIgnoringCache()
+          @browserWindow.webContents.loadUrl currentUrl
 
   close: ->
     @socket.terminate()
