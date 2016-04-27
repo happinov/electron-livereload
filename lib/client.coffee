@@ -48,7 +48,7 @@ class Client
           currentUrl = @browserWindow.webContents.getURL()
           @browserWindow.webContents.stop()
           @browserWindow.webContents.reloadIgnoringCache()
-          @browserWindow.webContents.loadUrl currentUrl
+          @browserWindow.webContents.loadURL currentUrl
 
   close: ->
     @socket.terminate()
