@@ -26,8 +26,8 @@ class Server
           @log 'electron-prebuilt not found, trying global electron'
           @electron = 'electron'
 
-  log: (msg) ->
-    console.log '[' + (new Date).toISOString() + '] [electron-livereload] [server]', msg
+  log: (args...) ->
+    console.log '[' + (new Date).toISOString() + '] [electron-livereload] [server]', args...
     return
 
   spawn: (args, spawnOpt, cb) ->
