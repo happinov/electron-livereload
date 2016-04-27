@@ -1,6 +1,6 @@
 {
   "name": "electron-livereload",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "electron live reload",
   "repository": "https://github.com/BoLaMN/electron-livereload.git",
   "main": "index.js",
