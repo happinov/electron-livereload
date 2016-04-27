@@ -7,8 +7,8 @@ pid = null
 
 class Server
   constructor: (opts) ->
-    @port = 30080
     @path = opts?.path or process.cwd()
+    @port = opts?.port or 30080
     @spawnOpt = stdio: 'inherit'
 
     @sessions = []
