@@ -7,14 +7,11 @@ pid = null
 
 class Server
   constructor: (opts) ->
-    @path = opts?.path || process.cwd()
     @port = 30080
+    @path = opts?.path or process.cwd()
     @spawnOpt = stdio: 'inherit'
 
     @sessions = []
-
-    @storePid = (pid) ->
-      @electronPid = pid
 
     if opts?.useGlobalElectron
       @electron = 'electron'
@@ -26,11 +23,14 @@ class Server
           @log 'electron-prebuilt not found, trying global electron'
           @electron = 'electron'
 
+  storePid: (pid) ->
+    @electronPid = pid
+
   log: (args...) ->
     console.log '[' + (new Date).toISOString() + '] [electron-livereload] [server]', args...
     return
 
-  spawn: (args, spawnOpt, cb) ->
+  spawn: (args, spawnOpt) ->
     electronProc = childProces.spawn(@electron, [ @path ].concat(args), spawnOpt)
 
     electronProc.on 'error', (err) =>
@@ -52,7 +52,7 @@ class Server
 
         @log 'receive message from client(window_id: ' + id + ') ' + message
 
-        messageHandler type, data, ws
+        @messageHandler type, data, ws
 
       ws.on 'close', =>
         @log 'client closed.'
@@ -63,21 +63,12 @@ class Server
     ws.send JSON.stringify(type: type, data: data)
     return
 
-  messageHandler: (type, data, ws) ->
-    switch type
-      when 'changeBounds'
-        ws.bounds = data.bounds
-      when 'getBounds'
-        @sendMessage ws, 'setBounds', bounds: ws.bounds
-
-    return
-
-  restart: (args, cb) ->
+  restart: (args) ->
     @stop()
     @wss.close()
 
     process.nextTick =>
-      @start()
+      @start(args)
 
     @log 'restart electron process'
 

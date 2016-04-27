@@ -8,9 +8,8 @@ class Client
   @getId: ->
     @windowId++
 
-  constructor: (browserWindow, port, setBounds) ->
+  constructor: (browserWindow, port) ->
     @port = port or 30080
-    @sendBounds = setBounds or true
 
     if browserWindow
       @browserWindow = browserWindow
