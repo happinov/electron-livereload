@@ -34,7 +34,7 @@ class Client
     return
 
   log: (args...) ->
-    console.log '[' + (new Date).toISOString() + '] [electron-livereload] [client: ' + @id + '] ' + args...
+    console.log '[' + (new Date).toISOString() + '] [electron-livereload] [client: ' + @id + '] ', args...
     return
 
   sendMessage: (type, data) ->
