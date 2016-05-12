@@ -9,7 +9,10 @@ class Server
   constructor: (opts) ->
     @path = opts?.path or process.cwd()
     @port = opts?.port or 30080
-    @spawnOpt = stdio: 'inherit'
+    @spawnOpt =
+      stdio: 'inherit'
+      env:
+        ELECTRON_LIVERELOAD: true
 
     @sessions = []
 
