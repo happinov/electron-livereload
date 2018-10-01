@@ -20,10 +20,10 @@ class Server
       @electron = 'electron'
     else
       try
-        @electron = require 'electron-prebuilt'
+        @electron = require 'electron'
       catch e
         if e.code == 'MODULE_NOT_FOUND'
-          @log 'electron-prebuilt not found, trying global electron'
+          @log 'electron not found, trying global electron'
           @electron = 'electron'
 
   storePid: (pid) ->
